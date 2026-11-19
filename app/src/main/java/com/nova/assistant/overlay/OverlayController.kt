@@ -140,8 +140,8 @@ class OverlayController(
 
     private fun moveBy(dx: Float, dy: Float) {
         val p = params ?: return
-        p.x = (p.x - dx).coerceAtLeast(0)
-        p.y = (p.y + dy).coerceAtLeast(0)
+        p.x = (p.x - dx).coerceAtLeast(0f).toInt()
+        p.y = (p.y + dy).coerceAtLeast(0f).toInt()
         runCatching { wm.updateViewLayout(root, p) }
     }
 

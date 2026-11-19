@@ -194,7 +194,7 @@ class NovaCharacterView(context: Context) : View(context) {
 
     private fun drawThinking(c: Canvas, cx: Float, cy: Float, r: Float, color: Int, rings: Float) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE; strokeWidth = 2.5f * d; color = color
+            style = Paint.Style.STROKE; strokeWidth = 2.5f * d; this.color = color
         }
         for (k in 0 until rings.toInt()) {
             val rr = r * (0.7f - 0.2f * k)
@@ -207,7 +207,7 @@ class NovaCharacterView(context: Context) : View(context) {
 
     private fun drawActing(c: Canvas, cx: Float, cy: Float, r: Float, color: Int) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE; strokeWidth = 2.5f * d; color = color
+            style = Paint.Style.STROKE; strokeWidth = 2.5f * d; this.color = color
         }
         val rr = r * 0.75f
         val oval = RectF(cx - rr, cy - rr, cx + rr, cy + rr)
@@ -218,7 +218,7 @@ class NovaCharacterView(context: Context) : View(context) {
 
     private fun drawSearching(c: Canvas, cx: Float, cy: Float, r: Float, color: Int) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE; strokeWidth = 2f * d; color = color; alpha = 160
+            style = Paint.Style.STROKE; strokeWidth = 2f * d; this.color = color; alpha = 160
         }
         c.drawCircle(cx, cy, r * 0.8f, p)
         val a = phase
@@ -231,12 +231,12 @@ class NovaCharacterView(context: Context) : View(context) {
 
     private fun drawReading(c: Canvas, cx: Float, cy: Float, r: Float, color: Int) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE; strokeWidth = 3f * d; color = color
+            style = Paint.Style.STROKE; strokeWidth = 3f * d; this.color = color
         }
-        val y = cy - r * 0.6f + ((phase / (2 * Math.PI)) % 1f) * r * 1.2f
+        val y = cy - r * 0.6f + (((phase / (2f * Math.PI.toFloat())) % 1f) * r * 1.2f)
         c.drawLine(cx - r * 0.6f, y, cx + r * 0.6f, y, p)
         c.drawCircle(cx, cy, r * 0.8f, Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE; strokeWidth = 1.5f * d; color = color; alpha = 120
+            style = Paint.Style.STROKE; strokeWidth = 1.5f * d; this.color = color; alpha = 120
         })
     }
 
