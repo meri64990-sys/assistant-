@@ -123,7 +123,8 @@ class TaskAgent(
 
     private fun stateFor(kind: StepKind): CharacterState = when (kind) {
         StepKind.OPEN_APP, StepKind.OPEN_URL, StepKind.OPEN_SETTINGS, StepKind.TAP_ELEMENT,
-        StepKind.TYPE_TEXT, StepKind.SWIPE, StepKind.HOME, StepKind.BACK -> CharacterState.ACTING
+        StepKind.TYPE_TEXT, StepKind.SWIPE, StepKind.HOME, StepKind.BACK,
+        StepKind.NAVIGATE -> CharacterState.ACTING
         StepKind.SEARCH_WEB -> CharacterState.SEARCHING
         StepKind.READ_SCREEN, StepKind.VERIFY_SCREEN -> CharacterState.READING
         StepKind.CONFIRM -> CharacterState.CONFIRM

@@ -303,7 +303,7 @@ class AssistantCore(
                     val list = runBlocking {
                         if (q.isNullOrBlank()) notes.all() else notes.search(q)
                     }
-                    val byDate = if (q != null) notes.findByDate(q) else emptyList()
+                    val byDate = if (q != null) runBlocking { notes.findByDate(q) } else emptyList()
                     val result = (list + byDate).distinctBy { it.id }.take(5)
                     main.post {
                         val text = if (result.isEmpty()) "Ничего не нашла"

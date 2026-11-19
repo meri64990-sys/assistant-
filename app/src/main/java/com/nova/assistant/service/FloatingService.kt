@@ -130,14 +130,14 @@ class FloatingService : Service() {
                 setPadding(pad, pad, pad, pad)
             }
             val text = TextView(this).apply {
-                text = question
+                this.text = question
                 setTextColor(Color.parseColor("#EAF0FF"))
                 textSize = 16f
             }
             val buttons = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
             fun btn(label: String, action: () -> Unit) {
                 val b = Button(this).apply {
-                    text = label
+                    this.text = label
                     setTextColor(Color.WHITE)
                     background = GradientDrawable().apply {
                         cornerRadius = 12 * d
