@@ -103,10 +103,10 @@ class CameraAssistantActivity : AppCompatActivity() {
 
     private fun processFrame(image: ImageProxy) {
         val bmp: Bitmap = YuvToRgb.convert(image) ?: return
-        val faces = arrayOf(FaceDetector.Face())
+        val faces = arrayOfNulls<FaceDetector.Face>(1)
         val detector = FaceDetector(bmp.width, bmp.height, 1)
         val found = try { detector.findFaces(bmp, faces) } catch (e: Exception) { 0 }
-        val face = faces.firstOrNull()
+        val face = faces[0]
         if (found > 0 && face != null) {
             val mid = PointF()
             face.getMidPoint(mid)

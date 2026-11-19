@@ -24,13 +24,15 @@ class NovaApp : Application() {
         super.onCreate()
         appContext = this
         settings = SettingsManager(this)
-        db = MemoryStore.get(this)
-        notes = NotesManager(db.noteDao())
-        history = TaskHistory(db.taskDao())
-        memory = MemoryRepository(db.memoryDao())
+        val database = MemoryStore.get(this)
+        db = database
+        notes = NotesManager(database.noteDao())
+        history = TaskHistory(database.taskDao())
+        memory = MemoryRepository(database.memoryDao())
         localAi = RuleBasedEngine()
-        parser = CommandParser()
-        resolver = IntentResolver(parser)
+        val commandParser = CommandParser()
+        parser = commandParser
+        resolver = IntentResolver(commandParser)
         conversation = ConversationContext()
     }
 

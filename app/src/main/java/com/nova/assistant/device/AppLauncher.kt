@@ -80,7 +80,12 @@ class AppLauncher(private val context: Context) {
             "звук", "громкость" -> Intent(Settings.ACTION_SOUND_SETTINGS)
             "батарея" -> Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)
             "память" -> Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)
-            "уведомления" -> Intent(Settings.ACTION_NOTIFICATION_SETTINGS)
+            "уведомления" -> if (android.os.Build.VERSION.SDK_INT >= 26) {
+                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            } else {
+                Intent(Settings.ACTION_SETTINGS)
+            }
             "приложения" -> Intent(Settings.ACTION_APPLICATION_SETTINGS)
             "обои" -> Intent(Settings.ACTION_WALLPAPER_SETTINGS)
             "блокировка", "безопасность" -> Intent(Settings.ACTION_SECURITY_SETTINGS)

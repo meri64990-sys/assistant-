@@ -48,6 +48,12 @@ object AccessibilityController {
 
     private var service: NovaAccessibilityService? = null
     private val main = Handler(Looper.getMainLooper())
+    private val mainExecutor = java.util.concurrent.Executor { main.post(it) }
+
+    /** Выполнить блок в главном потоке (Unit-лямбда, чтобы были допустимы return@onMain). */
+    private fun onMain(block: () -> Unit) {
+        main.post { block() }
+    }
 
     @Volatile private var lastPackageName: String? = null
     @Volatile private var lastSnapshot: ScreenSnapshot? = null
@@ -73,9 +79,9 @@ object AccessibilityController {
     // ------------------------------------------------------------------ //
 
     fun snapshot(cb: (ScreenSnapshot?) -> Unit) {
-        main.post {
+        onMain {
             val s = service
-            if (s == null) { cb(null); return@post }
+            if (s == null) { cb(null); return@onMain }
             val snap = buildSnapshot(s)
             lastSnapshot = snap
             cb(snap)
@@ -165,17 +171,24 @@ object AccessibilityController {
     // ------------------------------------------------------------------ //
 
     fun tapElement(index: Int, cb: (Boolean) -> Unit) {
-        main.post {
-            val s = service ?: return@post cb(false)
-            val node = findNodeByIndex(s.rootInActiveWindow, index)
-            if (node == null) { cb(false); return@post }
-            val r = Rect(); node.getBoundsInScreen(r)
-            cb(tap(r.centerX(), r.centerY()))
+        onMain {
+            val s = service
+            if (s == null) {
+                cb(false)
+            } else {
+                val node = findNodeByIndex(s.rootInActiveWindow, index)
+                if (node == null) {
+                    cb(false)
+                } else {
+                    val r = Rect(); node.getBoundsInScreen(r)
+                    cb(tap(r.centerX(), r.centerY()))
+                }
+            }
         }
     }
 
     fun tap(x: Int, y: Int, cb: (Boolean) -> Unit) {
-        main.post { cb(tapInternal(x, y)) }
+        onMain { cb(tapInternal(x, y)) }
     }
 
     private fun tapInternal(x: Int, y: Int): Boolean {
@@ -185,19 +198,19 @@ object AccessibilityController {
     }
 
     fun typeElement(index: Int, text: String, cb: (Boolean) -> Unit) {
-        main.post {
-            val s = service ?: return@post cb(false)
-            val node = findNodeByIndex(s.rootInActiveWindow, index) ?: return@post cb(false)
-            cb(typeInternal(node, text))
+        onMain {
+            val s = service
+            val node = s?.let { findNodeByIndex(it.rootInActiveWindow, index) }
+            if (s == null || node == null) cb(false) else cb(typeInternal(node, text))
         }
     }
 
     fun typeIntoEditable(text: String, cb: (Boolean) -> Unit) {
-        main.post {
-            val s = service ?: return@post cb(false)
-            val root = s.rootInActiveWindow ?: return@post cb(false)
+        onMain {
+            val s = service ?: return@onMain cb(false)
+            val root = s.rootInActiveWindow ?: return@onMain cb(false)
             val node = firstEditable(root)
-            if (node == null) { cb(false); return@post }
+            if (node == null) { cb(false); return@onMain }
             cb(typeInternal(node, text))
         }
     }
@@ -225,8 +238,8 @@ object AccessibilityController {
     }
 
     fun swipe(direction: String, cb: (Boolean) -> Unit) {
-        main.post {
-            val s = service ?: return@post cb(false)
+        onMain {
+            val s = service ?: return@onMain cb(false)
             val dm = s.resources.displayMetrics
             val cx = dm.widthPixels / 2f
             val cy = dm.heightPixels / 2f
@@ -244,15 +257,15 @@ object AccessibilityController {
     }
 
     fun back(cb: (Boolean) -> Unit) {
-        main.post { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK) ?: false) }
+        onMain { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK) ?: false) }
     }
 
     fun home(cb: (Boolean) -> Unit) {
-        main.post { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME) ?: false) }
+        onMain { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME) ?: false) }
     }
 
     fun recents(cb: (Boolean) -> Unit) {
-        main.post { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_RECENTS) ?: false) }
+        onMain { cb(service?.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_RECENTS) ?: false) }
     }
 
     private fun gesture(s: NovaAccessibilityService, path: Path, duration: Long): Boolean {
@@ -274,11 +287,11 @@ object AccessibilityController {
     // ------------------------------------------------------------------ //
 
     fun screenshot(cb: (Bitmap?) -> Unit) {
-        main.post {
+        onMain {
             val s = service
-            if (s == null || Build.VERSION.SDK_INT < 30) { cb(null); return@post }
+            if (s == null || Build.VERSION.SDK_INT < 30) { cb(null); return@onMain }
             runCatching {
-                s.takeScreenshot(Display.DEFAULT_DISPLAY, main, object : AccessibilityService.TakeScreenshotCallback {
+                s.takeScreenshot(Display.DEFAULT_DISPLAY, mainExecutor, object : AccessibilityService.TakeScreenshotCallback {
                     override fun onSuccess(result: AccessibilityService.ScreenshotResult) {
                         try {
                             val bmp = Bitmap.wrapHardwareBuffer(result.hardwareBuffer, result.colorSpace)
