@@ -87,7 +87,7 @@ class AppLauncher(private val context: Context) {
                 Intent(Settings.ACTION_SETTINGS)
             }
             "приложения" -> Intent(Settings.ACTION_APPLICATION_SETTINGS)
-            "обои" -> Intent(Settings.ACTION_WALLPAPER_SETTINGS)
+            "обои" -> Intent(Intent.ACTION_SET_WALLPAPER)
             "блокировка", "безопасность" -> Intent(Settings.ACTION_SECURITY_SETTINGS)
             "местоположение", "геоданные" -> Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             "язык" -> Intent(Settings.ACTION_LOCALE_SETTINGS)
@@ -106,9 +106,13 @@ class AppLauncher(private val context: Context) {
 
     fun home(): Boolean = launch(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
-    fun back(): Boolean = AccessibilityController.back {}
+    fun back() {
+        AccessibilityController.back { }
+    }
 
-    fun recents(): Boolean = AccessibilityController.recents {}
+    fun recents() {
+        AccessibilityController.recents { }
+    }
 
     fun recordUsage(pkg: String, label: String) {
         // Используется для подсказок «частые приложения». Не критично при сбое.

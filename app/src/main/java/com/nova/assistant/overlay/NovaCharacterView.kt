@@ -146,7 +146,7 @@ class NovaCharacterView(context: Context) : View(context) {
 
         // Внешнее свечение
         glow.color = color
-        glow.alpha = (40 + 90 * (0.5f + 0.5f * sin(phase))).coerceIn(0, 255)
+        glow.alpha = (40 + 90 * (0.5f + 0.5f * sin(phase))).coerceIn(0f, 255f).toInt()
         c.drawCircle(cx, cy, r + 8 * d + 4 * d * sin(phase), glow)
 
         // Тело
@@ -158,7 +158,7 @@ class NovaCharacterView(context: Context) : View(context) {
 
         // Внутреннее ядро
         core.color = color
-        core.alpha = (60 + 80 * (0.5f + 0.5f * sin(phase * 1.3f))).coerceIn(0, 255)
+        core.alpha = (60 + 80 * (0.5f + 0.5f * sin(phase * 1.3f))).coerceIn(0f, 255f).toInt()
         c.drawCircle(cx, cy, r * 0.55f, core)
 
         when (state) {

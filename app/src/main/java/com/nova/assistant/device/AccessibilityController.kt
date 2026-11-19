@@ -181,7 +181,7 @@ object AccessibilityController {
                     cb(false)
                 } else {
                     val r = Rect(); node.getBoundsInScreen(r)
-                    cb(tap(r.centerX(), r.centerY()))
+                    cb(tapInternal(r.centerX(), r.centerY()))
                 }
             }
         }
