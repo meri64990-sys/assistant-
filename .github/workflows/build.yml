@@ -13,6 +13,8 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "8.7"
 
       - name: Build
         run: |
@@ -22,8 +24,10 @@ jobs:
           if [ "$code" -ne 0 ]; then
             echo "----- ошибки сборки -----"
             grep -nE "^e: |error:|FAILURE:|What went wrong|> Task.*FAILED|Unresolved|Caused by|Could not|Compilation error" build.log | head -60
-            grep -E "^e: |error:|FAILURE:|What went wrong|> Task.*FAILED|Unresolved|Caused by|Could not" build.log \
-              | head -40 | cut -c1-600 | while IFS= read -r line; do
+            { grep -E "^e: |^w: |error:|FAILURE:|What went wrong|> Task.*FAILED|Unresolved|Caused by|Could not" build.log
+              echo "--- контекст ---"
+              awk '/What went wrong:/{f=1} f{print} /^\* Try:/{exit}' build.log | head -40
+            } | head -50 | cut -c1-600 | while IFS= read -r line; do
                 echo "::error::${line}"
               done
             exit "$code"
