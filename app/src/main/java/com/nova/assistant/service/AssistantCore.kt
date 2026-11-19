@@ -90,7 +90,7 @@ class AssistantCore(
         override fun onListeningChanged(listening: Boolean) {
             if (!listening && settings.alwaysListening) host.setState(CharacterState.IDLE)
         }
-    }
+    })
 
     val voiceEngine: VoiceEngine get() = voice
 
