@@ -3,7 +3,6 @@ package com.nova.assistant.service
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -66,7 +65,13 @@ class AssistantCore(
     private var resolver = IntentResolver(parser)
     private var pending: Intent? = null
 
-    private val voice = VoiceEngine(context, settings, object : VoiceEngine.Callbacks {
+    private lateinit var voice: VoiceEngine
+
+    init {
+        voice = createVoice()
+    }
+
+    private fun createVoice(): VoiceEngine = VoiceEngine(context, settings, object : VoiceEngine.Callbacks {
         override fun onPartial(text: String) {}
         override fun onResult(text: String) = onVoiceResult(text)
         override fun onWakeWord() {
@@ -85,7 +90,7 @@ class AssistantCore(
         override fun onListeningChanged(listening: Boolean) {
             if (!listening && settings.alwaysListening) host.setState(CharacterState.IDLE)
         }
-    })
+    }
 
     val voiceEngine: VoiceEngine get() = voice
 
@@ -351,7 +356,12 @@ class AssistantCore(
                 host.setState(CharacterState.ACTING)
                 val phone = findPhone(intent.contact)
                 if (phone != null) {
-                    launcher.launch(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(phone))))
+                    launcher.launch(
+                        android.content.Intent(
+                            android.content.Intent.ACTION_DIAL,
+                            Uri.parse("tel:" + Uri.encode(phone))
+                        )
+                    )
                     host.setState(CharacterState.DONE)
                     host.speak("Набираю ${intent.contact}")
                 } else {
@@ -497,7 +507,7 @@ class AssistantCore(
 
     private fun schedule(at: Long, action: String, label: String) {
         val am = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
-        val intent = Intent(context, TimerReceiver::class.java).setAction(action).putExtra("label", label)
+        val intent = android.content.Intent(context, TimerReceiver::class.java).setAction(action).putExtra("label", label)
         val pi = PendingIntent.getBroadcast(
             context, action.hashCode(), intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

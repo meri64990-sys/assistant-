@@ -78,21 +78,26 @@ class SearchEngine(private val context: Context) {
         }.start()
     }
 
-    private fun fetch(url: String): String? = try {
-        val conn = URL(url).openConnection() as HttpURLConnection
-        conn.connectTimeout = 8000
-        conn.readTimeout = 8000
-        conn.requestProperties["User-Agent"] =
-            "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Mobile Safari/537.36"
-        conn.instanceFollowRedirects = true
-        if (conn.responseCode !in 200..299) {
-            conn.disconnect()
-            return null
+    private fun fetch(url: String): String? {
+        return try {
+            val conn = URL(url).openConnection() as HttpURLConnection
+            conn.connectTimeout = 8000
+            conn.readTimeout = 8000
+            conn.setRequestProperty(
+                "User-Agent",
+                "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Mobile Safari/537.36"
+            )
+            conn.instanceFollowRedirects = true
+            if (conn.responseCode !in 200..299) {
+                conn.disconnect()
+                null
+            } else {
+                val text = conn.inputStream.bufferedReader().use { it.readText() }
+                conn.disconnect()
+                text
+            }
+        } catch (e: Exception) {
+            null
         }
-        val text = conn.inputStream.bufferedReader().use { it.readText() }
-        conn.disconnect()
-        text
-    } catch (e: Exception) {
-        null
     }
 }
