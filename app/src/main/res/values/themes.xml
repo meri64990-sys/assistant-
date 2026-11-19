@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Nova" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/nova_primary</item>
+        <item name="colorPrimaryDark">@color/nova_primary_dim</item>
+        <item name="colorAccent">@color/nova_accent</item>
+        <item name="android:colorBackground">@color/nova_bg</item>
+        <item name="colorSurface">@color/nova_surface</item>
+        <item name="android:textColorPrimary">@color/nova_text</item>
+        <item name="android:textColorSecondary">@color/nova_text_dim</item>
+        <item name="android:statusBarColor">@color/nova_bg</item>
+        <item name="android:navigationBarColor">@color/nova_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="preferenceTheme">@style/Theme.Nova.Preference</item>
+    </style>
+
+    <style name="Theme.Nova.Preference" parent="PreferenceThemeOverlay">
+        <item name="android:colorBackground">@color/nova_surface</item>
+    </style>
+
+    <style name="NovaCard">
+        <item name="android:background">@drawable/bg_card</item>
+        <item name="android:padding">16dp</item>
+    </style>
+</resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Персонаж">
+        <SwitchPreferenceCompat
+            android:key="visible"
+            android:title="Показывать персонажа"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="overlay"
+            android:title="Плавающий режим (поверх приложений)"
+            android:defaultValue="true" />
+        <SeekBarPreference
+            android:key="scale"
+            android:title="Размер персонажа"
+            android:max="16"
+            android:defaultValue="10"
+            app:showSeekBarValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Голос">
+        <SwitchPreferenceCompat
+            android:key="voice"
+            android:title="Голосовые ответы"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="always"
+            android:title="Всегда слушать"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="wake"
+            android:title="Реакция на слово «Нова»"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="offline_stt"
+            android:title="Офлайн-распознавание (Vosk)"
+            android:defaultValue="true" />
+        <SeekBarPreference
+            android:key="volume"
+            android:title="Громкость"
+            android:max="100"
+            android:defaultValue="100"
+            app:showSeekBarValue="true" />
+        <SeekBarPreference
+            android:key="rate"
+            android:title="Скорость речи"
+            android:max="15"
+            android:defaultValue="10"
+            app:showSeekBarValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Режим работы">
+        <ListPreference
+            android:key="mode"
+            android:title="Режим"
+            android:entries="@array/mode_names"
+            android:entryValues="@array/mode_values"
+            android:defaultValue="standard" />
+        <SeekBarPreference
+            android:key="sens"
+            android:title="Чувствительность микрофона"
+            android:max="100"
+            android:defaultValue="60"
+            app:showSeekBarValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Приватность и безопасность">
+        <SwitchPreferenceCompat
+            android:key="confirm"
+            android:title="Подтверждать чувствительные действия"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="history"
+            android:title="Сохранять историю задач"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="privacy"
+            android:title="Не сохранять пароли и финансовые данные"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Память">
+        <Preference
+            android:key="clear_notes"
+            android:title="Удалить все заметки" />
+        <Preference
+            android:key="clear_history"
+            android:title="Очистить историю задач" />
+        <Preference
+            android:key="clear_memory"
+            android:title="Очистить память помощника" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Отладка">
+        <SwitchPreferenceCompat
+            android:key="debug"
+            android:title="Журнал действий"
+            android:defaultValue="false" />
+        <Preference
+            android:key="about"
+            android:title="О приложении"
+            android:summary="NOVA 1.0 · работает локально, без API-ключей" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">NOVA</string>
+    <string name="settings_title">Настройки NOVA</string>
+    <string name="notes_title">Заметки</string>
+    <string name="history_title">История задач</string>
+    <string name="apps_title">Приложения</string>
+    <string name="camera_title">Визуальный режим</string>
+
+    <string name="a11y_label">NOVA — доступ к экрану</string>
+    <string name="a11y_desc">Позволяет NOVA видеть текст и кнопки на экране, нажимать их и вводить текст по вашей команде. Без этого разрешения управление интерфейсом невозможно.</string>
+    <string name="notification_channel">NOVA активна</string>
+    <string name="notification_channel_desc">Постоянная работа плавающего помощника</string>
+
+    <string name="state_idle">Ожидание</string>
+    <string name="state_listening">Слушаю</string>
+    <string name="state_thinking">Анализирую</string>
+    <string name="state_acting">Выполняю</string>
+    <string name="state_searching">Ищу</string>
+    <string name="state_reading">Читаю экран</string>
+    <string name="state_think_hard">Думаю</string>
+    <string name="state_error">Ошибка</string>
+    <string name="state_done">Готово</string>
+    <string name="state_confirm">Подтверждение</string>
+    <string name="state_hidden">Скрыт</string>
+
+    <string name="stop">Стоп</string>
+    <string name="listen">Слушать</string>
+    <string name="hide">Скрыть</string>
+    <string name="show">Показать</string>
+    <string name="disable">Выключить</string>
+    <string name="enable">Включить</string>
+</resources>

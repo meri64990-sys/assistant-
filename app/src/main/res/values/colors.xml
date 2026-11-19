@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nova_bg">#0B0E17</color>
+    <color name="nova_surface">#141A2A</color>
+    <color name="nova_surface_alt">#1B2338</color>
+    <color name="nova_primary">#6C8CFF</color>
+    <color name="nova_primary_dim">#3D4C8C</color>
+    <color name="nova_accent">#35E0C8</color>
+    <color name="nova_warn">#FF7A7A</color>
+    <color name="nova_text">#EAF0FF</color>
+    <color name="nova_text_dim">#8A93AD</color>
+    <color name="nova_white">#FFFFFF</color>
+    <color name="nova_black">#000000</color>
+</resources>
